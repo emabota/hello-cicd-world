@@ -2,7 +2,6 @@
 # Exercise for setting up a web server in an EC
 - name: Exercise for setting up a web server in an EC
   hosts: all
-  gather_facts: False
   user: ubuntu
   become: true
   become_method: sudo
