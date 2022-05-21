@@ -75,5 +75,5 @@ workflows:
   say-hello-workflow:
     jobs:
 #      - say-hello
-      - create_infrastructure
-#      - smoke_test
+#      - create_infrastructure
+      - smoke_test
