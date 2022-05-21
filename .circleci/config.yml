@@ -2,6 +2,15 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
+commands:
+  destroy_environment:
+    steps:
+      - run:
+          name: Destroy environment
+          when: on_fail
+          command: |
+            aws cloudformation delete-stack --stack-name eMabota-${CIRCLE_WORKFLOW_ID:0:7}
+
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
@@ -58,7 +67,7 @@ jobs:
       - run: 
           name: smoke test
           command: |
-            URL="https://blog.udacity.com/"
+            URL="https://blog.udacity.khome/"
             # Test if website exists
             if curl -s --head ${URL} 
             then
@@ -66,6 +75,8 @@ jobs:
             else
               return 1
             fi            
+      - destroy_environment:
+        when: on_fail
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
@@ -73,6 +84,6 @@ workflows:
   say-hello-workflow:
     jobs:
 #      - say-hello
-#      - create_infrastructure
+      - create_infrastructure
 #      - configure_infrastructure
       - smoke_test
